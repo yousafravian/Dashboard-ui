@@ -14,8 +14,6 @@ import {AsyncPipe} from "@angular/common";
   styleUrl: './tasks-list.component.scss'
 })
 export class TasksListComponent {
-
   #dataService = inject(DataService);
-
   tasksList$ = this.#dataService.getTasksList();
 }
