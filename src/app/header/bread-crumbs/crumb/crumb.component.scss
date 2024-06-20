@@ -5,11 +5,6 @@
     font-weight: bold;
   }
 
-  &:not(.active) {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-
   &::before {
     content: '/';
     margin: 0 10px;
