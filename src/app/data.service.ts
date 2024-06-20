@@ -115,6 +115,16 @@ export class DataService {
         taskId: 'TSK001',
         taskName: "Sample Task Name",
         cost: "EURO 1200"
+      },
+      {
+        taskId: 'TSK001',
+        taskName: "Sample Task Name",
+        cost: "EURO 1200"
+      },
+      {
+        taskId: 'TSK001',
+        taskName: "Sample Task Name",
+        cost: "EURO 1200"
       }
     ])
   }
