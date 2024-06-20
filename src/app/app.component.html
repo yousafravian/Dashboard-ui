@@ -1,29 +1,6 @@
 <div class="app-container">
   <app-header></app-header>
   <main class="container-fluid py-4 px-5">
-
-    <div class="company-data">
-      @for(data of companyData$ | async; track data) {
-        <app-company-data [style.--card-color]="data.color">
-          <i icon class="bi {{data.iconClass}}"></i>
-          <div title>{{ data.title }}</div>
-          <div units>{{ data.units }}</div>
-        </app-company-data>
-      }
-    </div>
-
-    <div class="company-info mt-4">
-      <app-info-card title="All Ongoing Tasks">
-        <app-tasks-list></app-tasks-list>
-      </app-info-card>
-      <app-info-card title="Monthly Task Activities (For Month of June)">
-        <!-- Demo Component Ref -->
-        <!-- https://stackblitz.com/edit/angular-d3-js-line-chart?file=src%2Fapp%2Fline-chart%2Fline-chart.component.ts,src%2Fapp%2Fline-chart%2Fline-chart.component.html,src%2Fapp%2Fline-chart%2Fline-chart.component.scss,src%2Fapp%2Fapp.component.html -->
-        <app-line-chart [xLabels]="lineChartLabels" [showDots]="true" [data]="lineChartdata"></app-line-chart>
-      </app-info-card>
-
-    </div>
-
+    <router-outlet></router-outlet>
   </main>
-
 </div>

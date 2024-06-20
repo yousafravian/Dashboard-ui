@@ -27,7 +27,6 @@
   background-color: var(--card-color);
   text-align: center;
   display: flex;
-  gap: 10px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -40,12 +39,15 @@
       margin: 0;
       font-size: 64px;
       color: #fff;
+      font-weight: bold;
     }
 
     [title] {
       margin: 0;
       color: #fff;
-      font-size: 32px;
+      font-size: 36px;
+      font-weight: 100;
+      letter-spacing: 2px;
     }
   }
 }

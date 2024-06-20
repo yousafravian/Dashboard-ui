@@ -9,6 +9,7 @@ interface LineChartModel {
   color: string;
   legend: string;
 }
+
 @Component({
   selector: 'app-line-chart',
   standalone: true,
@@ -18,9 +19,10 @@ interface LineChartModel {
 })
 export class LineChartComponent implements OnInit {
 
-  @Input("data") data: LineChartModel[] = [];
-  @Input("xLabels") xLabels: string[] = [];
-  @Input("showDots") showDots: boolean = false;
+  @Input() data: LineChartModel[] = [];
+  @Input() xLabels: string[] = [];
+  @Input() addLegend: boolean = false;
+  @Input() showDots: boolean = false;
   @Input("dateFormat") format = "%Y";
   private dataAdaptedToD3Js: any[] = [];
   public svg: any;
@@ -36,19 +38,8 @@ export class LineChartComponent implements OnInit {
     if (this.data.length < 10) {
       this.xLabels = this.covertToDate(this.xLabels);
 
-      /**
-       this.data[0].data.forEach((element, index) => {
-       let objectAdapted = { label: this.xLabels[index ] }
-       for (let i = 0; i < this.data.length; i++) {
-       objectAdapted[this.data[i].label] = this.data[i].data[index];
-       if (this.domainMaxRange < this.data[i].data[index]) {
-       this.domainMaxRange = this.data[i].data[index];
-       }
-       }
-       this.dataAdaptedToD3Js.push(objectAdapted);
-       }); */
       this.data[0].data.forEach((element, index) => {
-        let objectAdapted = { label: this.xLabels[index] };
+        let objectAdapted = {label: this.xLabels[index]};
         for (let i = 0; i < this.data.length; i++) {
           // @ts-ignore
           objectAdapted[this.data[i].label] = this.data[i].data[index];
@@ -76,7 +67,7 @@ export class LineChartComponent implements OnInit {
 
   draw() {
     // set the dimensions and margins of the graph
-    let margin = { top: 12, right: 100, bottom: 30, left: 30 },
+    let margin = {top: 12, right: 100, bottom: 30, left: 30},
       width = 1060 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
 
@@ -108,35 +99,17 @@ export class LineChartComponent implements OnInit {
     // Reformat the data: we need an array of arrays of {x, y} tuples
     let dataReady = allGroup.map(grpName => {
       this.dataAdaptedToD3Js.forEach(d => {
-        return { label: this.dateFormat(d.label), value: +d[grpName] };
+        return {label: this.dateFormat(d.label), value: +d[grpName]};
       });
       // .map allows to do something for each element of the list
       return {
         name: grpName,
         values: this.dataAdaptedToD3Js.map(d => {
-          return { label: this.dateFormat(d.label), value: +d[grpName] };
+          return {label: this.dateFormat(d.label), value: +d[grpName]};
         })
       };
     });
 
-    // I strongly advise to have a look to dataReady with
-    // console.log(dataReady)
-
-    // Add X axis --> it is a date format
-    /*
-    let x = d3
-      .scaleBand()
-      .domain(
-        this.dataAdaptedToD3Js.map(d => {
-          return d.label;
-        })
-      )
-      .range([0, width]);
-    svg
-      .append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
-*/
     let x = d3
       .scaleTime()
       .domain(
@@ -155,16 +128,6 @@ export class LineChartComponent implements OnInit {
       .call(xaxis);
 
     // Add Y axis
-    /*
-    let y = d3
-      .scaleLinear()
-      .domain([
-        0,
-        Math.abs(
-          this.domainMaxRange + (this.domainMaxRange * 0, 2) + this.data.length
-        )
-      ])
-      .range([height, 0]); */
     this.domainMinRange =
       this.domainMinRange == 0 ? 0 : this.domainMinRange + -5;
 
@@ -179,13 +142,37 @@ export class LineChartComponent implements OnInit {
       .range([height, 0]);
     svg.append("g").call(d3.axisLeft(y));
 
+
+    // Draw grid
+    // let numberOfTicks = 6;
+    //
+    // let yAxisGrid = y.ticks(numberOfTicks)
+    //   .tickSize(width, 0)
+    //   .tickFormat("")
+    //   .orient("right");
+    //
+    // let xAxisGrid = xaxis.ticks(numberOfTicks)
+    //   .tickSize(-height, 0)
+    //   .tickFormat("")
+    //   .orient("top");
+    //
+    // svg.append("g")
+    //   .classed('y', true)
+    //   .classed('grid', true)
+    //   .call(yAxisGrid);
+
+    // svg.append("g")
+    //   .classed('x', true)
+    //   .classed('grid', true)
+    //   .call(xAxisGrid);
+
     // Add the lines
     let line = d3
       .line()
       .x((d: { [x: string]: any; }) => {
         return x(d["label"]);
       })
-      .y(function(d: { [x: string]: string | number; }) {
+      .y(function (d: { [x: string]: string | number; }) {
         return y(+d["value"]);
       });
     svg
@@ -203,7 +190,7 @@ export class LineChartComponent implements OnInit {
         // @ts-ignore
         return myColor[d.name];
       })
-      .style("stroke-width", 2)
+      .style("stroke-width", 7)
       .style("fill", "none");
 
     // create a tooltip
@@ -263,7 +250,7 @@ export class LineChartComponent implements OnInit {
         return d.name;
       })
       .datum((d: { name: any; values: string | any[]; }) => {
-        return { name: d.name, value: d.values[d.values.length - 1] };
+        return {name: d.name, value: d.values[d.values.length - 1]};
       }) // keep only the last value of each time series
       .attr("transform", (d: { value: { label: any; value: any; }; }) => {
         return "translate(" + x(d.value.label) + "," + y(d.value.value) + ")";
@@ -278,44 +265,47 @@ export class LineChartComponent implements OnInit {
     // Add a legend (interactive)
     let cy = 30;
     let ty = 33;
-    this.data.forEach(element => {
-      svg
-        .append("circle")
-        .attr("cx", 30)
-        .attr("cy", cy)
-        .style("cursor", "pointer")
-        .attr("r", 6)
-        .style("fill", element.color)
-        .on("click", (d: any) => {
-          let currentOpacity: any = d3
-            .selectAll("." + element.label)
-            .style("opacity");
-          d3.selectAll("." + element.label).style(
-            "opacity",
-            currentOpacity == 1 ? 0 : 1
-          );
-        });
-      svg
-        .append("text")
-        .attr("x", 40)
-        .attr("y", ty)
-        .text(element.legend)
-        .style("font-size", "16px")
-        .style("cursor", "pointer")
-        .style("fill", element.color)
-        .attr("alignment-baseline", "middle")
-        .on("click", (d: any) => {
-          let currentOpacity: any = d3
-            .selectAll("." + element.label)
-            .style("opacity");
-          d3.selectAll("." + element.label).style(
-            "opacity",
-            currentOpacity == 1 ? 0 : 1
-          );
-        });
-      cy = cy + 20;
-      ty = ty + 20;
-    });
+    if (this.addLegend) {
+
+      this.data.forEach(element => {
+        svg
+          .append("circle")
+          .attr("cx", 30)
+          .attr("cy", cy)
+          .style("cursor", "pointer")
+          .attr("r", 6)
+          .style("fill", element.color)
+          .on("click", (d: any) => {
+            let currentOpacity: any = d3
+              .selectAll("." + element.label)
+              .style("opacity");
+            d3.selectAll("." + element.label).style(
+              "opacity",
+              currentOpacity == 1 ? 0 : 1
+            );
+          });
+        svg
+          .append("text")
+          .attr("x", 40)
+          .attr("y", ty)
+          .text(element.legend)
+          .style("font-size", "16px")
+          .style("cursor", "pointer")
+          .style("fill", element.color)
+          .attr("alignment-baseline", "middle")
+          .on("click", (d: any) => {
+            let currentOpacity: any = d3
+              .selectAll("." + element.label)
+              .style("opacity");
+            d3.selectAll("." + element.label).style(
+              "opacity",
+              currentOpacity == 1 ? 0 : 1
+            );
+          });
+        cy = cy + 20;
+        ty = ty + 20;
+      });
+    }
     d3.selectAll(".tick text").style("font-size", "14px");
   }
 }

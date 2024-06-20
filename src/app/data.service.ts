@@ -39,59 +39,12 @@ export class DataService {
         iconClass: 'bi-people'
       },
       {
-        title: "Stores",
+        title: "Services",
         units: 15,
         color: '#F1B33B',
         iconClass: 'bi-person-gear'
       },
     ])
-  }
-
-  getChartDate() {
-   return [
-     {
-       label: "avg",
-       legend: "The Average temperature",
-       data: [
-         9.9689868291,
-         10.9689868291,
-         11.9689868291,
-         12.9689868291,
-         14.9689868291,
-         15.9689868291,
-         16.9689868291
-       ],
-       color: "green"
-     },
-     {
-       label: "low",
-       legend: "The Min temperature",
-       data: [
-         8.9689868291,
-         9.9689868291,
-         10.9689868291,
-         11.9689868291,
-         12.9689868291,
-         13.9689868291,
-         14.9689868291
-       ],
-       color: "blue"
-     },
-     {
-       label: "height",
-       legend: "The Max temperature",
-       data: [
-         11.9689868291,
-         12.9689868291,
-         14.9689868291,
-         16.9689868291,
-         19.9689868291,
-         19.9689868291,
-         18.9689868291
-       ],
-       color: "red"
-     }
-   ];
   }
 
   getTasksList() {

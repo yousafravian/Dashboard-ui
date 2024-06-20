@@ -4,7 +4,9 @@
   </div>
   <div class="bread-crumbs separator">
     <app-bread-crumbs>
-      <app-crumb>DASHBOARD</app-crumb>
+      @for(crumb of crumbs; track crumb; let last = $last; let i = $index) {
+        <app-crumb [class.active]="last" (click)="onRoute(i)">{{ crumb | uppercase }}</app-crumb>
+      }
     </app-bread-crumbs>
   </div>
   <div class="actions">
