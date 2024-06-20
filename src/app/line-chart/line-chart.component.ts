@@ -2,7 +2,6 @@ import {Component, ElementRef, Input, OnInit} from "@angular/core";
 
 declare var d3: any;
 
-
 interface LineChartModel {
   label: string;
   data: any[];
@@ -15,10 +14,9 @@ interface LineChartModel {
   standalone: true,
   imports: [],
   templateUrl: './line-chart.component.html',
-  styleUrl: './line-chart.component.scss'
+  styleUrls: ['./line-chart.component.scss']
 })
 export class LineChartComponent implements OnInit {
-
   @Input() data: LineChartModel[] = [];
   @Input() xLabels: string[] = [];
   @Input() addLegend: boolean = false;
@@ -140,31 +138,37 @@ export class LineChartComponent implements OnInit {
         )
       ])
       .range([height, 0]);
-    svg.append("g").call(d3.axisLeft(y));
+    const yaxis = d3.axisLeft(y);
+    svg.append("g").call(yaxis);
 
+    // Define the X grid lines
+    function make_x_gridlines() {
+      return d3.axisBottom(x).ticks(9);
+    }
 
-    // Draw grid
-    // let numberOfTicks = 6;
-    //
-    // let yAxisGrid = y.ticks(numberOfTicks)
-    //   .tickSize(width, 0)
-    //   .tickFormat("")
-    //   .orient("right");
-    //
-    // let xAxisGrid = xaxis.ticks(numberOfTicks)
-    //   .tickSize(-height, 0)
-    //   .tickFormat("")
-    //   .orient("top");
-    //
-    // svg.append("g")
-    //   .classed('y', true)
-    //   .classed('grid', true)
-    //   .call(yAxisGrid);
+    // Define the Y grid lines
+    function make_y_gridlines() {
+      return d3.axisLeft(y).ticks(9);
+    }
 
-    // svg.append("g")
-    //   .classed('x', true)
-    //   .classed('grid', true)
-    //   .call(xAxisGrid);
+    // Add the X grid lines
+    // svg
+    //   .append("g")
+    //   .attr("class", "grid")
+    //   .attr("transform", "translate(0," + height + ")")
+    //   .call(make_x_gridlines()
+    //     .tickSize(-height)
+    //     .tickFormat("")
+    //   );
+
+    // Add the Y grid lines
+    svg
+      .append("g")
+      .attr("class", "grid")
+      .call(make_y_gridlines()
+        .tickSize(-width)
+        .tickFormat("")
+      );
 
     // Add the lines
     let line = d3
@@ -266,7 +270,6 @@ export class LineChartComponent implements OnInit {
     let cy = 30;
     let ty = 33;
     if (this.addLegend) {
-
       this.data.forEach(element => {
         svg
           .append("circle")
