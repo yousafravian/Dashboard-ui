@@ -1,0 +1,51 @@
+:host {
+  --card-color: #87B2E4;
+}
+
+.task-card {
+  border-radius: 8px;
+  width: max-content;
+  display: flex;
+  min-width: 400px;
+  overflow: hidden;
+  border: 3px solid var(--card-color);
+}
+
+.icon {
+  background: var(--bs-white);
+  padding: 10px 20px;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 100px;
+  color: var(--bs-gray-900);
+}
+
+.text {
+  flex: 2;
+  background-color: var(--card-color);
+  text-align: center;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 50px;
+
+  // Not ideal using ng-deep but there is no alternative for now
+  // See https://v17.angular.io/guide/component-styles#deprecated-deep--and-ng-deep
+  ::ng-deep {
+    [units] {
+      margin: 0;
+      font-size: 64px;
+      color: #fff;
+    }
+
+    [title] {
+      margin: 0;
+      color: #fff;
+      font-size: 32px;
+    }
+  }
+}

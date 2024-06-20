@@ -1,0 +1,14 @@
+
+
+.custom-table {
+
+  border: 1px solid var(--bs-gray-500);
+
+  tr td:not(:last-child), tr th:not(:last-child) {
+    border-right: 1px solid var(--bs-gray-500);
+  }
+
+  thead th {
+    background: var(--bs-gray-400);
+  }
+}

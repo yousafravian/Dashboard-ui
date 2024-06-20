@@ -1,0 +1,72 @@
+@use 'sass:color';
+
+header {
+  --header-height: 68px;
+  --padding-x: 20px;
+  --padding-y: 10px;
+  --border-color: var(--bs-gray-400);
+  --text-color: #3D7FB7;
+
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+
+
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: stretch;
+  max-height: var(--header-height);
+
+  .separator {
+    border-right: 1px solid var(--border-color);
+  }
+
+  .actions {
+    display: flex;
+    align-items: stretch;
+
+    .add-new {
+      font-weight: bold;
+      color: var(--text-color);
+      letter-spacing: -1px;
+    }
+
+    .profile {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      color: var(--text-color);
+      font-weight: bold;
+
+      small {
+        font-size: 12px;
+      }
+    }
+
+    > div {
+      cursor: pointer;
+      display: flex;
+      height: 100%;
+      align-items: center;
+      padding: var(--padding-y) var(--padding-x);
+    }
+
+    > div:last-of-type {
+      padding-right: 0;
+    }
+  }
+
+  .bread-crumbs {
+    display: flex;
+    align-items: center;
+    padding: var(--padding-y) var(--padding-x);
+  }
+
+  .hamburger {
+    font-size: 32px;
+    padding: var(--padding-y) var(--padding-x);
+  }
+
+  i.bi{
+    cursor: pointer;
+  }
+}

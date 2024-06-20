@@ -1,0 +1,25 @@
+<table class="table custom-table table-borderless">
+  <thead>
+  <tr>
+    <th scope="col">TaskId</th>
+    <th scope="col">TaskName</th>
+    <th scope="col">Cost</th>
+    <th scope="col">&nbsp;</th>
+  </tr>
+  </thead>
+  <tbody>
+
+    @for (task of tasksList$ | async; track task) {
+      <tr>
+        <td>{{ task.taskId }}</td>
+        <td>{{ task.taskName }}</td>
+        <td>{{ task.cost }}</td>
+        <td>&nbsp;</td>
+      </tr>
+    } @empty {
+      <div class="alert alert-warning" role="alert">
+        No tasks list found
+      </div>
+    }
+  </tbody>
+</table>
