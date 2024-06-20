@@ -22,13 +22,15 @@ export class LineChartComponent implements OnInit {
   @Input() addLegend: boolean = false;
   @Input() showDots: boolean = false;
   @Input("dateFormat") format = "%Y";
-  private dataAdaptedToD3Js: any[] = [];
-  public svg: any;
+
+  public svg?: SVGElement;
   public domainMaxRange: number = 0;
   public domainMinRange: number = 0;
   public dateFormat: Function;
 
-  constructor(public chartElem: ElementRef) {
+  private dataAdaptedToD3Js: { label: string; value?: string }[] = [];
+
+  constructor() {
     this.dateFormat = d3.timeFormat(this.format);
   }
 
@@ -63,7 +65,7 @@ export class LineChartComponent implements OnInit {
     return array;
   }
 
-  draw() {
+  draw(): void {
     // set the dimensions and margins of the graph
     let margin = {top: 12, right: 100, bottom: 30, left: 30},
       width = 1060 - margin.left - margin.right,
@@ -73,8 +75,6 @@ export class LineChartComponent implements OnInit {
     let svg = d3
       .select("#my_dataviz")
       .append("svg")
-      //.attr("width", width + margin.left + margin.right)
-      //.attr("height", height + margin.top + margin.bottom)
       .attr(
         "viewBox",
         `0 0 ${width + margin.left + margin.right} ${height +
@@ -97,12 +97,14 @@ export class LineChartComponent implements OnInit {
     // Reformat the data: we need an array of arrays of {x, y} tuples
     let dataReady = allGroup.map(grpName => {
       this.dataAdaptedToD3Js.forEach(d => {
+        // @ts-ignore
         return {label: this.dateFormat(d.label), value: +d[grpName]};
       });
       // .map allows to do something for each element of the list
       return {
         name: grpName,
         values: this.dataAdaptedToD3Js.map(d => {
+          // @ts-ignore
           return {label: this.dateFormat(d.label), value: +d[grpName]};
         })
       };
@@ -239,9 +241,6 @@ export class LineChartComponent implements OnInit {
         })
         .attr("r", 3)
         .attr("stroke", "white");
-      //.on("mousemove", d => {
-      // console.log("achraf", d.label);
-      // });
     }
 
     svg
