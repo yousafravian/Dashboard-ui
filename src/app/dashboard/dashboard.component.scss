@@ -1,14 +1,19 @@
 .company-data {
+  justify-content: stretch;
+  width: 100%;
+  margin: auto;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  gap: 20px;
-  flex-wrap: wrap;
-  //display: flex;
-  //justify-content: space-between;
+  gap: 30px;
 }
+
 
 .company-info {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 30px;
+
+  @media (max-width: 1280px) {
+    grid-template-columns: 1fr;
+  }
 }

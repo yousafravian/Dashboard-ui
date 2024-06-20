@@ -4,9 +4,9 @@
 
 .task-card {
   border-radius: 8px;
-  width: max-content;
   display: flex;
   min-width: 400px;
+  width: 100%;
   overflow: hidden;
   border: 3px solid var(--card-color);
 }

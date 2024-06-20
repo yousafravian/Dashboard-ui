@@ -14,7 +14,6 @@ header {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: stretch;
-  max-height: var(--header-height);
 
   .separator {
     border-right: 1px solid var(--border-color);
